@@ -1,6 +1,25 @@
-<h1>Editing {{.Title}}</h1>
-
-<form action="/save/{{.Title}}" method="POST">
-<div><textarea name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea></div>
-<div><input type="submit" value="Save"></div>
-</form>
+<!DOCTYPE html>
+<html>
+<title>Wiki | Editing {{.Title}}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+  body,h1,h2{font-family: "Raleway", sans-serif}
+  body, html {height: 100%}
+  body {background-color: #f3e2e2}
+  p {line-height: 2}
+</style>
+<body>
+  <div class="w3-container w3-padding-64 w3-grayscale-min" id="us">
+    <div class="w3-content">
+      <h1 class="w3-center w3-text-grey"><b>Editing {{.Title}}</b></h1>
+      <form action="/save/{{.Title}}" method="POST" class="w3-center w3-text-grey">
+      <div><textarea name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea></div>
+      <p class="w3-center"><input type="submit" class="w3-button w3-black w3-round w3-padding-large w3-large"></input></p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

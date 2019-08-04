@@ -1,5 +1,23 @@
-<h1>{{.Title}}</h1>
-
-<p>[<a href="/edit/{{.Title}}">edit</a>]</p>
-
-<div>{{printf "%s" .Body}}</div>
+<!DOCTYPE html>
+<html>
+<title>Wiki | {{.Title}}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+  body,h1,h2{font-family: "Raleway", sans-serif}
+  body, html {height: 100%}
+  body {background-color: #f3e2e2}
+  p {line-height: 2}
+</style>
+<body>
+  <div class="w3-container w3-padding-64 w3-grayscale-min" id="us">
+    <div class="w3-content">
+      <h1 class="w3-center w3-text-grey"><b>{{.Title}}</b></h1>
+      <p class="w3-center w3-text-grey">{{printf "%s" .Body}}</p><br>
+      <p class="w3-center"><a href="/edit/{{.Title}}" class="w3-button w3-black w3-round w3-padding-large w3-large">edit</a></p>
+    </div>
+  </div>
+</body>
+</html>
