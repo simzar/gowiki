@@ -13,7 +13,7 @@ import (
 // has Title and Body
 type Page struct {
 	Title string
-	Body  []byte
+	Body  template.HTML
 }
 
 const templateDir = "tmpl/"
@@ -21,10 +21,11 @@ const dataDir = "data/"
 
 var templates = template.Must(template.ParseFiles(templateDir+"edit.html", templateDir+"view.html"))
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
+var pageInterlinkPattern = regexp.MustCompile("\\[([A-Za-z0-9])+\\]")
 
 func (p *Page) save() error {
 	filename := dataDir + p.Title + ".txt"
-	return ioutil.WriteFile(filename, p.Body, 0600)
+	return ioutil.WriteFile(filename, []byte(p.Body), 0600)
 }
 
 func loadPage(title string) (*Page, error) {
@@ -33,7 +34,7 @@ func loadPage(title string) (*Page, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Page{Title: title, Body: body}, nil
+	return &Page{Title: title, Body: template.HTML(body)}, nil
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
@@ -62,7 +63,14 @@ func editHandler(w http.ResponseWriter, r *http.Request, title string) {
 
 func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	body := r.FormValue("body")
-	p := &Page{Title: title, Body: []byte(body)}
+  linksToReplace := pageInterlinkPattern.FindAllString(body, -1)
+  if linksToReplace != nil {
+    for _, v := range linksToReplace {
+      linkTitle := v[1:len(v)-1]
+      body = regexp.MustCompile("\\[" + linkTitle + "\\]").ReplaceAllString(body, " <a href=\"/view/" + linkTitle + "\">" + linkTitle + "</a>")
+    }
+  }
+	p := &Page{Title: title, Body: template.HTML(body)}
 	err := p.save()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

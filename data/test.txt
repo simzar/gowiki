@@ -1,7 +1,3 @@
-Hello world
+ <a href="/view/test">test</a>  <a href="/view/anotherTest">anotherTest</a> 
 
-see ya soon!
-!!!
-
-ok, and some more new data
-oooooh
+And some other text that links to  <a href="/view/test">test</a> page
